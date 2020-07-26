@@ -11,7 +11,7 @@
 
 ### 1.2 项目上传信息
 
-GitHub地址：
+GitHub地址：https://github.com/mikollin/SOFT130071_pj
 
 
 
@@ -31,7 +31,9 @@ GitHub地址：
 
 ### 2.1 对数据库的修改
 
-由于我的足迹的实现，新增了表travelhistory。由于好友列表的实现，为了添加好友，新增了表travelfriendship和travelinvitation，为了bonus中对图片进行评论的实现，新增了表travelimagecomments和travelimagecommentsfavor。
+我沿用了之前Web课pj的数据库，同时在travelimage中还增加了username、UploadDate和favoredNum列。
+
+由于我的足迹的实现，新增了表travelhistory。由于好友列表的实现，为了添加好友，新增了表travelfriendship和travelinvitation，为了bonus中对图片进行评论的实现，新增了表travelimagecomments和travelimagecommentsfavor，由于以上新增的表都会在后面详细说明并展示结构，这里就不多赘述。
 
 
 
