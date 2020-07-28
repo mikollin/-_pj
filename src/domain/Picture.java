@@ -31,6 +31,19 @@ public class Picture {
         this.author=author;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Picture))
+            return false;
+        if (obj == this)
+            return true;
+        return this.getImageId().equals(((Picture) obj).getImageId());
+    }
+
+    public int hashCode(){
+        return imageId.intValue();//简单原则
+    }
+
 
     public String getPath() {
         return path;

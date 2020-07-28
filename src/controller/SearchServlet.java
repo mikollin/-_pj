@@ -4,6 +4,8 @@ import dao.PictureDAO;
 import dao.UserDAO;
 import domain.Picture;
 import domain.User;
+import service.SearchingUtil;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +32,12 @@ public class SearchServlet extends HttpServlet {
         String type=request.getParameter("type");
         String sortType=request.getParameter("sort");
         String filter_value=request.getParameter("filter_value");
+
+        String filter_value1="%"+filter_value+"%";
         filter_value="%"+filter_value+"%"; //模糊搜索
+
         String sql=null;
-        String offset;
+        int offset;
 
 
             if (type.equals("Title") && sortType.equals("FavoredNum")) {
@@ -50,23 +55,50 @@ public class SearchServlet extends HttpServlet {
             }
 
         PictureDAO pictureDAO=new PictureDAO();
-        List<Picture> results=new ArrayList<Picture>();
+        List<Picture> resultsall=new ArrayList<Picture>();
+        List<Picture> results;
+        List<Picture> addedres;
 
-        results=pictureDAO.getForList(sql,filter_value);
+        resultsall=pictureDAO.getForList(sql,filter_value);
+        System.out.println("result :"+resultsall);
+
+        //filter_value= SearchingUtil.specialStr(filter_value);
+        filter_value=SearchingUtil.specialStrKeyword(filter_value);
+        System.out.println(filter_value);
+
+        results=resultsall;
+        addedres=pictureDAO.getForList(sql,filter_value);
+        for(Picture add :addedres ){
+            if(!resultsall.contains(add)){
+                results.add(add);
+            }
+        }
+
+        System.out.println("added :"+results);
+
         System.out.println("size"+results.size());
         request.setAttribute("allCount",results.size());
 
 
+        List<Picture> res=new ArrayList<Picture>();
 
 
         if(request.getParameter("offset")==null) {
             sql=sql+"limit 0,5";
+
+            for(int i=0;i<5&&i<results.size();i++)
+                res.add(results.get(i));
+
         }
         else{
 
-            offset=(String) request.getParameter("offset");
+            offset=Integer.parseInt((String) request.getParameter("offset"));
             System.out.println(offset);
             sql=sql+"limit "+offset+",5";
+
+
+            for(int i=offset;i<5+offset&&i<results.size();i++)
+                res.add(results.get(i));
 
         }
 
@@ -75,8 +107,28 @@ public class SearchServlet extends HttpServlet {
         System.out.println(sql);
 
 
-        results= pictureDAO.getForList(sql,filter_value);
+        /*
+
+        results= pictureDAO.getForList(sql,filter_value1);
+//
+//        filter_value= SearchingUtil.specialStr(filter_value);
+//        filter_value=SearchingUtil.specialStrKeyword(filter_value);
+        System.out.println("results :"+results);
+        addedres=pictureDAO.getForList(sql,filter_value);
+        for(Picture add :addedres ){
+            if(!resultsall.contains(add)&&results.size()<5){
+                results.add(add);
+            }
+        }
+
+        System.out.println("added :"+results);
+
+
         request.setAttribute("results",results);
+
+         */
+
+        request.setAttribute("results",res);
         //System.out.println(results);
 
         request.getRequestDispatcher("search.jsp").forward(request,response);

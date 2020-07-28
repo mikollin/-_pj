@@ -5911,15 +5911,143 @@ response.sendRedirect("detail?imageId="+imageId);
 
 
 
+### 4.5 高级、全面的模糊搜索
+
+在这里我采用了更进一步的模糊搜索，一开始是搜索数据库中包含输入框中连续字符的所有记录，这里进一步为搜索数据库中所有包含输入框中所有字符的记录，可以不连续。然后这里采用的是，先把连续字符查到的记录按照所选择的方式先进行排列，然后把不连续的所有包含输入框中字符的记录按照所选择的方式排列在后面。
+
+首先为了搜索到不连续，写了一个工具类SearchingUtil：
+
+用到了其中的方法如下：
+
+```java
+ public static String specialStrKeyword(String str){
+        if(str==null||str==""){
+            return null;
+        }
+        StringBuffer stringBuffer = new StringBuffer(str);
+        int length=str.length();
+        for (int i = 0; i <length; i++) {
+            char chari=stringBuffer.charAt(i);
+
+                    stringBuffer.insert(i, "%");
+                    i++;
+                    length++;
+             
+        }
+        return stringBuffer.toString();
+
+    }
+```
+
+然后修改SearchServlet中的相关方法如下：
+
+之前的代码选择排列的方式等等都一样，放上修改的部分
+
+```java
+ PictureDAO pictureDAO=new PictureDAO();
+        List<Picture> resultsall=new ArrayList<Picture>();
+        List<Picture> results;
+        List<Picture> addedres;
+
+        resultsall=pictureDAO.getForList(sql,filter_value);
+        System.out.println("result :"+resultsall);
+
+        //filter_value= SearchingUtil.specialStr(filter_value);
+        filter_value=SearchingUtil.specialStrKeyword(filter_value);
+        System.out.println(filter_value);
+
+        results=resultsall;
+        addedres=pictureDAO.getForList(sql,filter_value);
+        for(Picture add :addedres ){
+            if(!resultsall.contains(add)){
+                results.add(add);
+            }
+        }
+
+        System.out.println("added :"+results);
+
+        System.out.println("size"+results.size());
+        request.setAttribute("allCount",results.size());
+
+
+        List<Picture> res=new ArrayList<Picture>();
+
+
+        if(request.getParameter("offset")==null) {
+            sql=sql+"limit 0,5";
+
+            for(int i=0;i<5&&i<results.size();i++)
+                res.add(results.get(i));
+
+        }
+        else{
+
+            offset=Integer.parseInt((String) request.getParameter("offset"));
+            System.out.println(offset);
+            sql=sql+"limit "+offset+",5";
+
+
+            for(int i=offset;i<5+offset&&i<results.size();i++)
+                res.add(results.get(i));
+
+        }
 
 
 
+        System.out.println(sql);
 
 
+        /*
+
+        results= pictureDAO.getForList(sql,filter_value1);
+//
+//        filter_value= SearchingUtil.specialStr(filter_value);
+//        filter_value=SearchingUtil.specialStrKeyword(filter_value);
+        System.out.println("results :"+results);
+        addedres=pictureDAO.getForList(sql,filter_value);
+        for(Picture add :addedres ){
+            if(!resultsall.contains(add)&&results.size()<5){
+                results.add(add);
+            }
+        }
+
+        System.out.println("added :"+results);
 
 
+        request.setAttribute("results",results);
 
+         */
 
+        request.setAttribute("results",res);
+        //System.out.println(results);
+
+        request.getRequestDispatcher("search.jsp").forward(request,response);
+```
+
+先把连续包含的放入resultsall中，然后通过SearchingUtil中的方法把输入的值字符之间都加上%，再搜索一次，先将resultsall赋值给results，再将与之前一次搜索不重复的放入results中添加，之后的分页就按照offset从results中取子集即可，不像之前一样重新再往数据库中查找了一遍了。
+
+同时这里为了搜索不重复的，需要重写Picture的equals方法如下，即imageId同说明Picture同：
+
+```java
+@Override
+public boolean equals(Object obj) {
+    if (!(obj instanceof Picture))
+        return false;
+    if (obj == this)
+        return true;
+    return this.getImageId().equals(((Picture) obj).getImageId());
+}
+
+public int hashCode(){
+    return imageId.intValue();//简单原则
+}
+```
+
+整体实现如下，也是给了个例子进一步形象的说明：
+
+在下图中，hello的收藏热度为1，hell的收藏热度为0，‘Pisa Cathedral from Leaning Tower’的热度为1。
+
+![高级搜索](web/source/img/img/高级搜索.png)
 
 
 

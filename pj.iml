@@ -23,5 +23,8 @@
     <orderEntry type="library" name="commons-fileupload-1.4" level="project" />
     <orderEntry type="library" name="commons-io-2.6" level="project" />
     <orderEntry type="library" name="fastjson-1.2.49" level="project" />
+    <orderEntry type="library" name="websocket-api" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.24-bin" level="project" />
+    <orderEntry type="library" name="gson-2.4" level="project" />
   </component>
 </module>

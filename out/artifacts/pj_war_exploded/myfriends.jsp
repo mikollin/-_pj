@@ -26,6 +26,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="source/font-awesome-4.7.0/css/font-awesome.min.css"/>
+    <script src="source/jquery-1.10.2/jquery-1.10.2.js"></script>
+    <script src="source/js/jqfloatbox.js"></script>
+
+
 
     <link rel="stylesheet" type="text/css" media="screen" href="source/css/myfriends.css" />
 
@@ -336,7 +340,12 @@
            <table class="friendeach" cellpadding="10">
                <tr >
                    <td rowspan="4"><i style="font-size: 68px" class="fa fa-user-circle-o" aria-hidden="true"></i></td>
-                   <td><a href="visitFriendFavor?visitorId=<%= user.getId()%>&friendId=<%= friendship.getFriendId()%>">Username : <%= friend.getUsername()%></a></td>
+                   <td><a href="visitFriendFavor?visitorId=<%= user.getId()%>&friendId=<%= friendship.getFriendId()%>">Username : <%= friend.getUsername()%></a>
+
+<%--                       &nbsp  &nbsp &nbsp &nbsp &nbsp--%>
+<%--                       <a class="my-link <%= "friendId:"+friendship.getFriendId()%>" style="text-decoration-line: underline">CHAT</a>--%>
+<%--                   --%>
+                   </td>
                </tr>
                <tr>
                    <td><a href="visitFriendFavor?visitorId=<%= user.getId()%>&friendId=<%= friendship.getFriendId()%>">Email : <%= friend.getEmail()%></a></td>
@@ -355,12 +364,14 @@
                </div>
            </div>
 
+
            </div>
 
            <% }
                } %>
 
-    </div>
+
+       </div>
 </section>
 
 
@@ -445,6 +456,110 @@
 </html>
 <script defer>
 
+
+    /*
+
+    $("a.my-link").click(function () {
+        alert( this.getAttribute("class").substr(17));
+
+        $.floatbox({
+            ajax:  {
+               // url: "getMessages?senderId=<%= user.getId()%>&receiverId="+this.getAttribute("class").substr(17), // request url
+               url:"websocket",
+                // params:  "name=ieda&age=23", //post parameters
+                before:  "Loading content", //loading message while the request is being processed
+                delay: 500, //每隔5s刷新
+                finish: function () {
+                    //callback function
+                }
+            },
+            fade: true,
+            content:
+                "<div id=\"chatroom\"><h2>Chatting</h2>" +
+                "<div id=\"chattingmessages\">" +
+                    "<div class=\"others\">AAA : <br><div class=\"messContent\">你好</div>" +
+                    "</div>" +
+                    "<div class=\"mine\">BBB : <br><div class=\"messMyContent\">你好</div>" +
+                " </div>"+
+                "<div class=\"others\">AAA : <br><div class=\"messContent\">你好</div>" +
+                "</div>" +
+                "<div class=\"mine\">BBB : <br><div class=\"messMyContent\">你好</div>" +
+                " </div>"+
+                "<div class=\"others\">AAA : <br><div class=\"messContent\">你好</div>" +
+                "</div>" +
+                "<div class=\"mine\">BBB : <br><div class=\"messMyContent\">你好</div>" +
+                " </div>"+
+                "<div class=\"others\">AAA : <br><div class=\"messContent\">你真的真的真的很不错</div>" +
+                "</div>" +
+                "<div class=\"mine\">BBB : <br><div class=\"messMyContent\">你也真的真的真的很好</div>" +
+                " </div>"+
+                "</div>" +
+
+                "<form action=\"\" method=\"post\">" +
+                "          <textarea style='width: 550px;height:90px' class=\"form-control\" id=\"comments\" name=\"comments\" cols=\"6\" type=\"text\" placeholder=\"Please input no more than 30 characters ...\" maxlength=\"30\"  required></textarea>" +
+                "          <br><button style='float:right;margin-right:50px;' type=\"submit\" id=\"comment_submit\" name=\"comment_submit\" class=\"btn btn-primary\">Send</button>" +
+                "      </form>"
+            +"</div>"
+
+    });
+        //固定开始看到的在最底部
+        document.getElementById("chattingmessages").scrollTo(0, document.getElementById("chattingmessages").scrollHeight);
+    });
+
+
+    $(function() {
+        var url = "websocket";
+        var ws = "";
+        var message ={"id":"","msg":"","form":"","to":""};
+        function connection() {
+            ws = new WebSocket(url);
+            console.log("connection.......");
+            ws.onmessage = function (e){
+                var json = eval('(' +  e.data.toString() + ')');
+                showMessage(json.from +":"+ json.msg);
+            }
+            ws.onclose = function() {
+                showMessage("close");
+            }
+            ws.onerror = function (e){
+                showMessage("error");
+            }
+            ws.onopen = function() {
+                showMessage("链接成功")
+                message.id = $(".identity").val();
+                message.msg = "newUser";
+                console.log(JSON.stringify(message));
+                ws.send(JSON.stringify(message));
+                message.msg = "";
+
+            }
+        }
+
+
+
+
+        $(".start-conn-btn").click(function() {
+            connection();
+        });
+        $(".send-btn").click(function() {//send message
+            message.to = $(".to-user").val();
+            message.msg = $(".msg-context").val();
+            $(".msg-context").val("");
+            ws.send(JSON.stringify(message));
+            showMessage( "我:" + message.msg );
+            message.msg = "";
+
+        });
+
+        function showMessage(msg) {
+            $("#chattingmessages").append( msg + "<br/>");
+
+        }
+
+
+    });
+
+*/
 
 </script>
 
