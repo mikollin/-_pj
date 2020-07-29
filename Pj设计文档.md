@@ -1963,8 +1963,6 @@ public class HomeServlet extends HttpServlet {
 
 
 
-
-
 #### 3.1.4 search搜索页
 
 首先有两组单选框和一个输入框，两组都必须选择，然后点击search按钮会提交到SearchServlet，通过doGet方法获取用户输入的筛选方式和排序类型，来形成不同的sql语句，最后往数据库中进行搜索，先会将所有符合筛选的搜索一遍，获取记录，设为request的“allCount”属性，以便于之后计算页数，之后会根据分页的offset添加limit offset,5，将获得picture对象的集合放到request中，最后转发到search.jsp进行显示。这时需要一段js代码来回显之前用户输入的数据。
@@ -2475,14 +2473,6 @@ if(pageNow-2>0&& pageNow+2<=count){
 
 
 以上为搜索页的完整实现。同时之后的分页效果都同这里，不多赘述了。
-
-
-
-
-
-
-
-
 
 
 
@@ -3922,8 +3912,6 @@ public class ModifyServlet extends HttpServlet {
 
 
 
-
-
 #### 3.2.4 myfriends我的好友页
 
 首先需要完成通过用户名搜索用户并发送添加请求，待该用户同意后两者互为好友。同时成为好友后可以在对方设置开放收藏页的情况下，访问好友的收藏和足迹，还可以删除好友。
@@ -5285,15 +5273,18 @@ public class ToggleFavorIsOpenedServlet extends HttpServlet {
 
 
 
+### 3.3  最终整体修改
 
+最后为了整体统一还把图片的主题整体统一成了Theme而不是之前的Content。
 
+然后把upload.jsp中两个包移除，既没有用到且之后部署好像只能import一个包不然会报错（查看日志后得出）
 
+将这两个包注释掉：
 
-
-
-
-
-
+```
+<%@ page import="sun.lwawt.macosx.CSystemTray" %>
+<%@ page import="jdk.nashorn.internal.codegen.SpillObjectCreator" %>
+```
 
 
 
