@@ -199,7 +199,7 @@
         String username=userDAO.getValue(sql,uid);
         out.println(username+"<br>");
       %>
-      Content : <%= picture.getContent()+"<br>"%>
+      Theme : <%= picture.getContent()+"<br>"%>
       UploadDate: <% String date= picture.getUploadDate().toString();date=date.substring(0,date.length()-2); out.print(date+"<br>"); %>
     </p>
   </div>

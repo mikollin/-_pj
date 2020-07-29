@@ -13,6 +13,8 @@
 
 GitHub地址：https://github.com/mikollin/SOFT130071_pj
 
+部署项目地址：http://mikollin.xyz:63888/pj_war_exploded/
+
 
 
 ### 1.3 整体项目结构
@@ -5269,8 +5271,6 @@ public class ToggleFavorIsOpenedServlet extends HttpServlet {
 
 
 
-
-
 附上我的收藏页和好友收藏页的对比：
 
 ![我的收藏页](web/source/img/img/我的收藏页.png)
@@ -6049,15 +6049,85 @@ public int hashCode(){
 
 ![高级搜索](web/source/img/img/高级搜索.png)
 
+由此完成功能。
 
 
 
+### 4.6 云部署
+
+首先我复用了之前Web课的Pj2完成部署所用的服务器和域名和端口。
+
+然后首先需要加载jdk，本地用了jdk1.8.0_241，一开始安装了1.8.0_221，但是因为后面整个项目无法运行出错，所以重新下载了，要保证远程主机下载的java版本和tomcat版本都大于等于本地的版型。
+
+然后照常在/etc/profile中设置java的环境变量。tomcat和jdk的环境布置，都在本地下载好压缩包再利用filezilla上传到远程主机。
+
+同时由于之前mysql已经安装好，按照之前说明的对数据库的更改重新修改远程主机中的相应数据库，建立新的表并且修改结构，即可。
+
+之后参照了阿里云部署web项目的帮助指南：https://help.aliyun.com/document_detail/172784.html?spm=a2c4g.11186623.6.1158.452f630fmPVA8c
+
+建立用户www，创建网站的根目录并且进行设置tomcat的相关变量为网站根目录：
+
+```
+<Context path="" docBase="/data/wwwroot/default" debug="0" reloadable="false" crossContext="true"/>
+```
+
+然后要记得更改相应的端口号为自己的端口号63888:
+
+```
+<Connector port="63888"
+```
+
+然后设置相应的CATALINA_HOME为自己安装tomcat的目录并且修改运行的java版本为自己的版本即可。
+
+之后就能看见自己的项目了：
+
+![云部署1](web/source/img/img/云部署1.png)
 
 
 
+这里遇上了一个问题，是中文乱码的问题，明明本地运行都是正确的，同时tomcat的设置也都是utf8的编码，但是上传的图片输入中文时还是显示为问号（？），之后勘察phpmyadmin的数据库后发现，是数据库中默认服务器的编码为latin，即写入数据库出现了编码问题。
 
+如果通过phpmyadmin修改或者通过 `mysql -uroot -p`  登录mysql后用命令重启mysql都会恢复默认的设置。
 
+```
+set character_set_database=utf8;
+set character_set_server=utf8;
+```
 
+于是找到mysql的配置文件/etc/mysql/mysql.conf.d/mysqld.cnf，然后往其中增加：
+
+```
+[client]
+default-character-set=utf8
+/*[mysqld]*/
+character-set-server=utf8
+```
+
+最终解决。
+
+![云部署2](web/source/img/img/云部署2.png)
+
+最后来谈一下项目的打包过程，我把idea中的war exploded包打包成war包放入网站根目录/data/wwwroot/default下。同时为了与之前路径相同，把包命名为pj:war_exploded，不然项目路径会出错。
+
+<img src="web/source/img/img/war包.png" alt="war包" style="zoom:50%;" />
+
+之后具体打包的步骤如图：
+
+首先找到Project Structure。
+
+<img src="web/source/img/img/打包1.png" alt="打包1" style="zoom:50%;" />
+
+然后如图添加架包，除了之前说的明明还要将之前已经add as Library的架包点击最下方的fix加到包中，然后我看的教程还叫我点击绿色框出的+号按钮添加整个文件。
+
+<img src="web/source/img/img/打包3.png" alt="打包3" style="zoom:50%;" />
+
+之后需要build这个war包，如图所示。
+
+<img src="web/source/img/img/打包2.png" alt="打包2" style="zoom:50%;" />
+
+<img src="web/source/img/img/打包4.png" alt="打包4" style="zoom:50%;" />
+
+由此完成功能。
 
 
 

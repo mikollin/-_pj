@@ -2,8 +2,9 @@
 <%@ page import="dao.PictureDAO" %>
 <%@ page import="domain.Picture" %>
 <%@ page import="java.util.List" %>
-<%@ page import="sun.lwawt.macosx.CSystemTray" %>
-<%@ page import="jdk.nashorn.internal.codegen.SpillObjectCreator" %><%--
+<%--<%@ page import="sun.lwawt.macosx.CSystemTray" %>--%>
+<%--<%@ page import="jdk.nashorn.internal.codegen.SpillObjectCreator" %>--%>
+<%--
   Created by IntelliJ IDEA.
   User: yilingzhao
   Date: 2020/7/11

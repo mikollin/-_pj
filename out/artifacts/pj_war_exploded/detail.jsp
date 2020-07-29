@@ -147,7 +147,7 @@
 
           <p><i class="fa fa-camera-retro" aria-hidden="true"></i> IMAGE DETAILS</p>
           <table>
-            <tr><td>Content : <%= picture.getContent()==null?"":picture.getContent() %></td></tr>
+            <tr><td>Theme : <%= picture.getContent()==null?"":picture.getContent() %></td></tr>
 
             <tr><td>Country : <%= picture.getCountry()==null?"":picture.getCountry() %></td></tr>
             <tr><td>City : <%= picture.getCity()==null?"":picture.getCity() %></td></tr>
