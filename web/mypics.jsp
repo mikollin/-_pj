@@ -96,9 +96,9 @@
 
 
     %>
-    <div id="pic_line">You haven't uploaded any pictures!
-      <br>
-      Please create sth!</div>
+    <h2>You haven't uploaded any pictures!
+
+      Please create sth!</h2>
       <%
     }else{
 

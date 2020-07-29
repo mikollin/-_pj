@@ -208,17 +208,15 @@
     <% List<Picture> pics=(List<Picture>)request.getAttribute("favorPics");
     if(pics==null&&request.getAttribute("message").equals("cannotVisited")){
       %>
-    <div id="pic_line">
+    <h2>
       Sorry you are not allowed to
-      <br>
       visit <%= friend.getUsername()%> 's favorites!
-      </div>
+      </h2>
     <%
     }else if(pics.size()==0){
     %>
-    <div id="pic_line">You haven't favored any pictures!
-      <br>
-      Please create sth!</div>
+    <h2><%= request.getParameter("friendId")==null?"You haven't":friend.getUsername()+" hasn't"%> favored any pictures!
+        <%= request.getParameter("friendId")==null?"Please create sth!":""%></h2>
     <%
     }else{
 
