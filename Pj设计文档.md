@@ -5286,6 +5286,12 @@ public class ToggleFavorIsOpenedServlet extends HttpServlet {
 <%@ page import="jdk.nashorn.internal.codegen.SpillObjectCreator" %>
 ```
 
+最后还将提示文字统一，统一采用了h2的格式用作提示，之后检查还发现了如果没有收藏但是看了很多足迹，自己的浮动框会覆盖footer的问题，因此将收藏栏的高度设为随着足迹的size改变，即
+
+```jsp
+<div id="myfavorcontent" style="min-height: <%= 300+history.size()*25%>px">
+```
+
 
 
 ## 4、 Bonus的完成情况
