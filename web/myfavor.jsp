@@ -194,7 +194,7 @@
 
 
 
-  <div id="myfavorcontent">
+  <div id="myfavorcontent" style="min-height: <%= 300+history.size()*25%>px">
 
     <div class="myfavor_til"><%= request.getParameter("friendId")==null?"My":friend.getUsername()+" 's "%> FAVORITE</div>
 
