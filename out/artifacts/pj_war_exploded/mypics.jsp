@@ -98,7 +98,7 @@
     %>
     <h2>You haven't uploaded any pictures!
 
-      Please create sth!</h2>
+      <br>Please create sth!</h2>
       <%
     }else{
 

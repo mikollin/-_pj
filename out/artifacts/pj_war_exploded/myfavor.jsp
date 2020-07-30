@@ -216,7 +216,7 @@
     }else if(pics.size()==0){
     %>
     <h2><%= request.getParameter("friendId")==null?"You haven't":friend.getUsername()+" hasn't"%> favored any pictures!
-        <%= request.getParameter("friendId")==null?"Please create sth!":""%></h2>
+        <br><%= request.getParameter("friendId")==null?"Please create sth!":""%></h2>
     <%
     }else{
 
